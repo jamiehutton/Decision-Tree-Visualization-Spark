@@ -55,16 +55,24 @@ d3.json("data/structure.json", function(error, flare) {
   root.x0 = height / 2;
   root.y0 = 0;
 
-  function collapse(d) {
-    if (d.children) {
-      d._children = d.children;
-      d._children.forEach(collapse);
-      d.children = null;
+function expand(d){   
+    var children = (d.children)?d.children:d._children;
+    if (d._children) {        
+        d.children = d._children;
+        d._children = null;       
     }
-  }
-
-  root.children.forEach(collapse);
-  update(root);
+    if(children)
+      children.forEach(expand);
+}
+// To collapse only the first two children
+/*root.children.forEach(expand);
+update(root);*/
+function expandAll(){
+    expand(root); 
+    update(root);
+}
+// To collapse All
+expandAll();
 });
 
 d3.select(self.frameElement).style("height", "480px");
