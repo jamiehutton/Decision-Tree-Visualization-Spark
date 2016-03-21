@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
 	sc = SparkContext(appName="DecisionTreeClassification")
 
-	raw_data = MLUtils.loadLibSVMFile(sc, 'data/sample_libsvm_data.txt')
+	raw_data = MLUtils.loadLibSVMFile(sc, '/home/hechem/spark-campaign-classification/test/data/sample_libsvm_data.txt')
 	(trainingDataSet, testDataSet) = raw_data.randomSplit([0.7, 0.3])
 
 	tree = DecisionTree.trainClassifier(trainingDataSet, numClasses=2, categoricalFeaturesInfo={}, impurity='gini', maxDepth=4, maxBins=30)
@@ -57,8 +57,9 @@ if __name__ == "__main__":
 				data.append(line)
 			else : break
 			if not line : break
-		res = parse(data[1:])
-		with open('data/structure.json', 'w') as outfile:
+		res = []
+		res.append({'name':'Root', 'children':parse(data[1:])})
+		with open('/home/hechem/spark-campaign-classification/test/data/structure.json', 'w') as outfile:
 			json.dump(res[0], outfile)
 		print ('Conversion Success !')
 	tree_json(tree_to_json)
